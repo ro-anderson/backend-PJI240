@@ -23,33 +23,54 @@ class LivrosRepository:
                 db.session.rollback()
                 raise exception
 
-    def insert(self, titulo, genero):
+    def insert(self, id_doador, titulo, genero):
         with DBConnectionHandler() as db:
             try:
-                data_isert = Livros(titulo=titulo, genero=genero)
+                data_isert = Livros(id_doador=id_doador, status=True, titulo=titulo, genero=genero)
                 db.session.add(data_isert)
                 db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
 
-    def delete(self, titulo):
+    def delete(self, id):
         with DBConnectionHandler() as db:
             try:
-                db.session.query(Livros).filter(Livros.titulo == titulo).delete()
+                db.session.query(Livros).filter(Livros.id == id).delete()
                 db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
 
-    def update_genero(self, titulo, genero):
+    def update_genero(self, id, genero):
         with DBConnectionHandler() as db:
             try:
-                db.session.query(Livros).filter(Livros.titulo == titulo).update({ "genero": genero })
+                db.session.query(Livros).filter(Livros.id == id).update({ "genero": genero})
                 db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
+
+    def update_titulo(self, id, titulo):
+        with DBConnectionHandler() as db:
+            try:
+                db.session.query(Livros).filter(Livros.id == id).update({ "titulo": titulo})
+                db.session.commit()
+            except Exception as exception:
+                db.session.rollback()
+                raise exception
+
+    def update_status(self, id):
+        with DBConnectionHandler() as db:
+            try:
+                status = db.session.query(Livros).filter(Livros.id == id).status
+                new_status = not status
+                db.session.query(Livros).filter(Livros.id == id).update({ "status": new_status})
+                db.session.commit()
+            except Exception as exception:
+                db.session.rollback()
+                raise exception
+
 if __name__ == '__main__':
     titulo = 'Dom Casmurro'
     genero = 'Romance'
@@ -57,8 +78,8 @@ if __name__ == '__main__':
     genero2 = 'Drama'
     titulo3 = 'Chapeuzinho Vermelho'
     genero3 = 'Infantil'
-    #lr = LivrosRepository()
-    #print(lr.select())
+    lr = LivrosRepository()
+    print(lr.select())
     #lr.select_livros_genero("Drama")
     #lr.select_livros_genero("Romance")
     #lr.select_livros_genero("Guerra")

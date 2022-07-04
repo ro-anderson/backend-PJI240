@@ -4,7 +4,9 @@ from sqlalchemy.orm import sessionmaker
 class DBConnectionHandler:
 
     def __init__(self) -> None:
-        self.__connection_string = 'mysql+pymysql://root:supersenha123@localhost:3306/dbpi'
+        self.__connection_string = 'postgresql+psycopg2://postgres:password@localhost:5433/postgres'
+        #postgresql+psycopg2://user:password@host:port/dbname[?key=value&key=value...]
+        #"postgresql+psycopg2"
         self.__engine = self.__create_database_engine()
         self.session = None
 
