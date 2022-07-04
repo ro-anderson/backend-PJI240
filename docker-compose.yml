@@ -28,15 +28,11 @@ services:
     hostname: backend_debug
     #depends_on:
     #  - db
-    environment:
-      MYSQL_ROOT_PASSWORD: supersenha123
-      MYSQL_DATABASE: db
-      MYSQL_PORT: 5432
-      MYSQL_HOSTNAME: db
     volumes:
       - "./infra:/app/infra"
     ports:
       - 5678:5678
+      - 5433:5433
 
 #volumes:
 #db_data: {}

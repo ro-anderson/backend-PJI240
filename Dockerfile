@@ -18,8 +18,11 @@ FROM base as debug
 ENV DEBUG_HOST="0.0.0.0" \ 
     DEBUG_PORT="5678" \
     DEBUG_LIB_PATH="./infra" \
-    DEBUG_MODULE="repository" \
-    DEBUG_FILE="livros_repository.py"
+    DEBUG_MODULE="testes" \
+    DEBUG_FILE="testes.py" \
+    DB_PORT="5433"
+
+EXPOSE ${DB_PORT}
 
 # Work directory inside container
 WORKDIR /app
