@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  db:
+    platform: linux/amd64
+    image: mysql:8.0
+    hostname: db
+    container_name: mysql_container
+    #restart: always
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: supersenha123
+      MYSQL_DATABASE: db
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/var/lib/mysql/db_data:/var/lib/mysql"
+    cap_add:
+      - SYS_NICE  # Desabilitar o aviso "mbind: Operation not permitted"
+
+  backend_debug:
+    platform: linux/amd64
+    container_name: backend_debug
+    build:
+      context: "."
+      target: debug
+    restart: unless-stopped
+    hostname: backend_debug
+    #depends_on:
+    #  - db
+    volumes:
+      - "./infra:/app/infra"
+    ports:
+      - 5678:5678
+      - 5433:5433
+
+#volumes:
+#db_data: {}
+
+networks:
+  default:
+    external: true
+    name: network_db_backend_debug
